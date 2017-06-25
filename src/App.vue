@@ -11,6 +11,14 @@
      * 3. 在父组件中使用子组件 和 向子组件发送数据（sendDataToSubComponent='hello, 父组件给子组件发送的数据'）
      */
     <greet sendDataToSubComponent='父组件给子组件发送的数据'></greet>
+
+    /*
+     * 3. 在父组件中使用子组件 和 子组件向父组件发送数据（自定义事件v-on:自定义名称=‘自定义方法’）
+     */
+    <response v-on:subComponentSendDataToFatherComponent='acceptData'></response>
+    <h2><strong>{{responseMsg}}</strong></h2>
+    <h2><strong>{{dispatchData}}</strong></h2>
+
   </div>
 </template>
 
@@ -20,23 +28,37 @@ import Storage from './storage';
  * 1. 在父组件中引入子组件
  */
 import greet from './components/greetFromAppComponent'
+import response from './components/responseToAppComponent'
+
 export default {
   data : function(){
     return　{
       'title'　:　'my　to　do　list',
-      'taskList'　:　Storage.fetch()
+      'taskList'　:　Storage.fetch(),
+      'responseMsg' : '',
+      'dispatchData'　:　''
     }
   },
+
   /*
    * 2. 在父组件中注册子组件
    */
-  components : {greet},
+  components : {greet, response},
+
   watch : {
     'taskList' : {
       handler : function(taskList){
         Storage.save(taskList);
       },
       deep : true
+    }
+  },
+  /*
+   * 1. 使用$dispatch()　方法发送数据,　子组件向父组件发送数据的方法
+   */
+  events　:　{
+    'dispatchSendData'　:　function(msg){
+      this.dispatchData　=　msg;
     }
   },
   methods : {
@@ -65,7 +87,14 @@ export default {
         item.task = '';
         item.task = item.oldValue;
       }
-    }
+    },
+
+    /*
+     * 1. 使用　ｖ-on　和　$emit()　发送数据,　子组件向父组件发送数据的方法
+     */
+     acceptData : function(msg){
+        this.responseMsg　=　msg
+     }
   }
 }
 </script>
