@@ -17,7 +17,6 @@
      */
     <response v-on:subComponentSendDataToFatherComponent='acceptData'></response>
     <h2><strong>{{responseMsg}}</strong></h2>
-    <h2><strong>{{dispatchData}}</strong></h2>
 
   </div>
 </template>
@@ -51,14 +50,6 @@ export default {
         Storage.save(taskList);
       },
       deep : true
-    }
-  },
-  /*
-   * 1. 使用$dispatch()　方法发送数据,　子组件向父组件发送数据的方法
-   */
-  events　:　{
-    'dispatchSendData'　:　function(msg){
-      this.dispatchData　=　msg;
     }
   },
   methods : {
